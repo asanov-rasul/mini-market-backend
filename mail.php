@@ -5,6 +5,28 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+$allowedOrigin = 'minimarket-lac.vercel.app';
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if ($origin === $allowedOrigin) {
+    header("Access-Control-Allow-Origin: $allowedOrigin");
+    header('Vary: Origin');
+}
+
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    exit;
+}
+
 require_once('phpmailer/PHPMailerAutoload.php');
 
 header('Content-Type: application/json; charset=utf-8');
